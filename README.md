@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/thma/json-processing.svg)](https://travis-ci.org/thma/json-processing)
+
 # json-processing
 simple json processing in Haskell
 
