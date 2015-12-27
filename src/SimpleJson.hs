@@ -1,20 +1,12 @@
 module SimpleJson where
 
-import Text.ParserCombinators.Parsec hiding (spaces)
-import Control.Monad
-import Data.List (intercalate)    
+import Text.ParserCombinators.Parsec -- hiding (spaces)
 
-data JValue = JString String
-            | JNumber Double
-            | JBool Bool
-            | JNull
-            | JObject [(String, JValue)]
-            | JArray [JValue]
-              deriving (Eq, Ord, Show)
+import JSONClass
 
 -- parser
-spaces :: Parser ()
-spaces = skipMany1 space
+-- spaces :: Parser ()
+-- spaces = skipMany1 space
 
 parseString :: Parser JValue
 parseString = do
@@ -31,8 +23,6 @@ parseNull :: Parser JValue
 parseNull = JNull <$ string "null"
          
 parseNumber :: Parser JValue
--- parseNumber = liftM (JNumber . read) $ many1 (oneOf "0123456789.") --many1 digit <* char '.' <* many digit
-
 parseNumber = do
     int <- many1 digit
     frac <- option "" (char '.' >> many1 digit)
@@ -49,17 +39,25 @@ parseExpr  = parseString
 
 parseArray :: Parser JValue
 parseArray = do
+  optional spaces
   char '['
+  optional spaces
   x <- sepBy parseExpr ((optional spaces) <* char ',' <* (optional spaces))
+  optional spaces
   char ']'
-  return $ JArray x
+  --optional spaces
+  return $ toJValue $ JAry x
 
 parseObject :: Parser JValue
 parseObject = do 
+  optional spaces
   char '{'
+  optional spaces
   x <- sepBy parseField ((optional spaces) <* char ',' <* (optional spaces))
+  optional spaces
   char '}'
-  return $ JObject x
+  --optional spaces
+  return $ toJValue $ JObj x
 
 parseField :: Parser (String, JValue)
 parseField = do
@@ -98,9 +96,9 @@ isNull :: JValue -> Bool
 isNull v = v == JNull
 
 getObject :: JValue -> Maybe [(String, JValue)]
-getObject (JObject o) = Just o
+getObject (JObject o) = Just $ fromJObj o
 getObject _           = Nothing   
               
 getArray :: JValue -> Maybe [JValue]
-getArray (JArray a)  = Just a
+getArray (JArray a)  = Just $ fromJAry a
 getArray _           = Nothing
