@@ -1,11 +1,19 @@
 name:                 json-processing
 version:              0.1.0.0
 synopsis:             Simple JSON Processing library
+description:          Simple parsing and pretty printing of JSON data
+license:              Apache
+category:             data
+stability:            experimental
 homepage:             https://github.com/thma/json-processing
 author:               Thomas Mahler
 maintainer:           thma@apache.org
 build-type:           Simple
 cabal-version:        >=1.10
+
+source-repository head
+  type:     git
+  location: https://github.com/thma/json-processing.git
 
 library
   build-depends:        base, wl-pprint
