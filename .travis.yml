@@ -73,7 +73,7 @@ script:
  - cabal build
 
  - cabal test
-# - cabal check
+ - cabal check
 
  # tests that a source-distribution can be generated
  - cabal sdist
