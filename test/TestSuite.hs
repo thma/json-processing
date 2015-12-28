@@ -1,5 +1,8 @@
 module Main (main) where
+
+-- qualified import of test cases
 import qualified TestPure
+import qualified TestIO
 
 import Test.Framework
 
@@ -11,7 +14,8 @@ main = defaultMain tests
 tests :: [Test]
 tests =
   [
-    testGroup "Pure Test" TestPure.tests
+    testGroup "Pure Test" TestPure.tests,
+    testGroup "IO Test" TestIO.tests
   ]
 
 

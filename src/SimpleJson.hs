@@ -39,24 +39,24 @@ parseExpr  = parseString
 
 parseArray :: Parser JValue
 parseArray = do
-  optional spaces
+  spaces
   char '['
-  optional spaces
-  x <- sepBy parseExpr ((optional spaces) <* char ',' <* (optional spaces))
-  optional spaces
+  spaces
+  x <- sepBy parseExpr (spaces <* char ',' )
+  spaces
   char ']'
-  --optional spaces
+  spaces
   return $ toJValue $ JAry x
 
 parseObject :: Parser JValue
 parseObject = do 
-  optional spaces
+  spaces
   char '{'
-  optional spaces
-  x <- sepBy parseField ((optional spaces) <* char ',' <* (optional spaces))
-  optional spaces
+  spaces
+  x <- sepBy parseField (spaces <* char ',' <* spaces)
+  spaces
   char '}'
-  --optional spaces
+  spaces
   return $ toJValue $ JObj x
 
 parseField :: Parser (String, JValue)
@@ -64,7 +64,7 @@ parseField = do
   char '"'
   key <- many (noneOf "\"")
   char '"'
-  char ':' <* (optional spaces)
+  char ':' <* spaces
   val <- parseExpr
   return $ (,) key val
 
@@ -74,7 +74,7 @@ readJValue input = case parse parseExpr "json" input of
     Left err -> JString $ "No match: " ++ show err
     Right val -> val
 
-
+{- we don't need these in an open world...
 -- accessors
 getString :: JValue -> Maybe String
 getString (JString s) = Just s
@@ -102,3 +102,4 @@ getObject _           = Nothing
 getArray :: JValue -> Maybe [JValue]
 getArray (JArray a)  = Just $ fromJAry a
 getArray _           = Nothing
+-}

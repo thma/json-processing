@@ -16,7 +16,7 @@ main = defaultMain tests
 tests :: [Test]
 tests =
   [
-    testCase "check read / pp cyle:" (assertEqual "check read / pp cyle:" j7 (readJValue (show (pp j7))))
+    testCase "check read / pp cyle" (assertEqual "check read / pp cyle:" j7 (readJValue (show (pp j7))))
   ]
 
 -- example instances
@@ -28,11 +28,3 @@ j4 = JBool True
 j5 = toJValue $ JObj [("id", j21), ("text", j3)]
 j6 = toJValue $ JAry [j1, j2, j3, j4, j5]
 j7 = toJValue $ JAry [j3,j6,j5]
-
-{-
-main = do
-    putStrLn $ show $ pp j7
-    putStrLn $ show $ pp (readJValue (show (pp j7)))
-    putStrLn $ "check read / pp cyle: " ++ show (j7 == readJValue (show (pp j7)))
-
--}
