@@ -4,8 +4,7 @@ import Text.PrettyPrint.Leijen
 
 import JSONClass
 
-
-
+-- | prettyprint a JSON object
 pp :: JValue -> Doc
 pp (JString s)    = dquotes (string s)
 pp (JNumber n)    = double n
