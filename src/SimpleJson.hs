@@ -30,7 +30,7 @@ parseNumber = do
 
 
 parseExpr :: Parser JValue
-parseExpr  = parseString
+parseExpr =  parseString
          <|> parseNumber
          <|> parseObject
          <|> parseArray
@@ -60,19 +60,18 @@ parseObject = do
   return $ toJValue $ JObj x
 
 parseField :: Parser (String, JValue)
-parseField = do
+parseField = do 
   char '"'
   key <- many (noneOf "\"")
   char '"'
   char ':' <* spaces
-  val <- parseExpr
-  return $ (,) key val
+  (,) key <$> parseExpr
 
 
 readJValue :: String -> JValue
 readJValue input = case parse parseExpr "json" input of
-    Left err -> JString $ "No match: " ++ show err
-    Right val -> val
+  Left err -> JString $ "No match: " ++ show err
+  Right val -> val
 
 {- we don't need these in an open world...
 -- accessors
